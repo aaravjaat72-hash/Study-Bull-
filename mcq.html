@@ -22,7 +22,6 @@
       -webkit-tap-highlight-color: transparent;
     }
     
-    /* Option button standard state */
     .option-card {
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -30,7 +29,6 @@
       transform: scale(0.98);
     }
 
-    /* Option Animations */
     @keyframes opt-pulse-correct {
       0% { transform: scale(1); }
       50% { transform: scale(1.02); }
@@ -64,11 +62,11 @@
           <i class="fa-solid fa-arrow-left text-base"></i>
         </button>
         <div>
-          <h1 id="subject-title" class="text-base font-bold leading-tight">MCQ Practice</h1>
+          <h1 id="subject-title" class="text-base font-bold leading-tight truncate max-w-[190px]">MCQ Practice</h1>
           <p id="mcq-subtitle" class="text-[11px] text-blue-200 font-medium">Practice &amp; Learn</p>
         </div>
       </div>
-      <!-- Progress Pill -->
+      <!-- Score Pill -->
       <div class="bg-blue-900/60 border border-blue-400/30 px-3 py-1 rounded-full text-xs font-bold text-blue-100 flex items-center gap-1.5">
         <i class="fa-regular fa-circle-check text-emerald-400"></i>
         <span id="score-counter">0 / 0</span>
@@ -76,8 +74,8 @@
     </div>
   </header>
 
-  <!-- MAIN PRACTICE CONTAINER -->
-  <main class="max-w-md mx-auto p-4">
+  <!-- SCREEN 1: ACTIVE QUIZ SCREEN -->
+  <main id="quiz-screen" class="max-w-md mx-auto p-4">
 
     <!-- Progress Bar -->
     <div class="w-full bg-slate-200 h-1.5 rounded-full mb-4 overflow-hidden">
@@ -90,23 +88,18 @@
         <span id="question-index-badge" class="text-[11px] font-extrabold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">
           Question 1
         </span>
-        <button onclick="bookmarkQuestion()" class="text-slate-400 hover:text-amber-500 transition text-sm">
-          <i id="bookmark-icon" class="fa-regular fa-bookmark"></i>
-        </button>
       </div>
-      <p id="question-text" class="text-[16px] font-bold text-slate-800 leading-relaxed">
+      <p id="question-text" class="text-[15px] font-bold text-slate-800 leading-relaxed">
         Loading question...
       </p>
     </div>
 
     <!-- Options Container -->
-    <div id="options-container" class="space-y-3">
-      <!-- Options dynamically JS se load honge -->
-    </div>
+    <div id="options-container" class="space-y-3"></div>
 
-    <!-- Explanation Box (Initially Hidden) -->
+    <!-- 1-Line Explanation Box -->
     <div id="explanation-box" class="hidden mt-4 bg-emerald-50 border border-emerald-200 rounded-2xl p-4 shadow-sm transition-all duration-300">
-      <div class="flex items-center gap-2 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-1.5">
+      <div class="flex items-center gap-2 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-1">
         <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i>
         <span>Explanation</span>
       </div>
@@ -115,8 +108,54 @@
 
   </main>
 
-  <!-- FIXED BOTTOM CONTROLS -->
-  <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 py-3 px-4 shadow-lg z-40">
+  <!-- SCREEN 2: POST-TEST DEEP ANALYSIS SCREEN (Initially Hidden) -->
+  <main id="analysis-screen" class="max-w-md mx-auto p-4 hidden">
+    
+    <!-- Score Card Overview -->
+    <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm text-center mb-5">
+      <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-2.5">
+        <i class="fa-solid fa-chart-pie"></i>
+      </div>
+      <h2 class="text-lg font-black text-slate-800">Test Analysis &amp; Report</h2>
+      <p class="text-xs text-slate-400 mt-0.5">Apna detailed performance summary dekhein</p>
+
+      <div class="grid grid-cols-3 gap-2.5 mt-4 pt-4 border-t border-slate-100">
+        <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-2.5 text-center">
+          <span class="text-[10px] font-bold text-emerald-600 block uppercase">Correct</span>
+          <span id="anal-correct" class="text-lg font-extrabold text-emerald-700">0</span>
+        </div>
+        <div class="bg-rose-50 border border-rose-100 rounded-2xl p-2.5 text-center">
+          <span class="text-[10px] font-bold text-rose-600 block uppercase">Wrong</span>
+          <span id="anal-wrong" class="text-lg font-extrabold text-rose-700">0</span>
+        </div>
+        <div class="bg-blue-50 border border-blue-100 rounded-2xl p-2.5 text-center">
+          <span class="text-[10px] font-bold text-blue-600 block uppercase">Accuracy</span>
+          <span id="anal-accuracy" class="text-lg font-extrabold text-blue-700">0%</span>
+        </div>
+      </div>
+
+      <div class="flex gap-2.5 mt-4">
+        <a href="index.html" class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 font-bold text-xs rounded-xl text-slate-700 transition">
+          Home Portal
+        </a>
+        <button onclick="location.reload()" class="w-1/2 py-2.5 bg-blue-600 hover:bg-blue-700 font-bold text-xs rounded-xl text-white transition">
+          Reattempt Test
+        </button>
+      </div>
+    </div>
+
+    <!-- Detailed Solutions Header -->
+    <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider mb-3 flex items-center gap-2">
+      <i class="fa-solid fa-list-check text-blue-600"></i> Detailed Solutions Review
+    </h3>
+
+    <!-- List of All Questions With Full Analysis -->
+    <div id="analysis-list" class="space-y-4"></div>
+
+  </main>
+
+  <!-- FIXED BOTTOM CONTROLS FOR QUIZ -->
+  <footer id="quiz-footer" class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 py-3 px-4 shadow-lg z-40">
     <div class="max-w-md mx-auto flex items-center justify-between gap-3">
       <button 
         id="prev-btn" 
@@ -135,23 +174,17 @@
   </footer>
 
   <!-- ========================================== -->
-  <!-- MCQ ENGINE SCRIPT                          -->
+  <!-- MCQ ENGINE WITH AUTO ANALYSIS              -->
   <!-- ========================================== -->
   <script>
-    /*
-      ===============================================================
-      SAMPLE QUESTIONS DATA STRUCTURE:
-      Firebase se sync hone par bhi exact yahi structure store hoga.
-      ===============================================================
-    */
     const QUESTION_BANK = {
       default: [
         {
           id: 1,
           question: "सिंधु घाटी सभ्यता का प्रमुख बंदरगाह नगर कौन सा था?",
           options: ["कालीबंगा", "लोथल", "रोपड़", "मोहनजोदड़ो"],
-          correct: 1, // 0-based index: 1 means 'लोथल'
-          explanation: "लोथल गुजरात के भाल क्षेत्र में भोगवा नदी के तट पर स्थित सिंधु घाटी सभ्यता का प्रमुख प्राचीन बंदरगाह शहर था।"
+          correct: 1,
+          explanation: "लोथल गुजरात के भोगवा नदी के तट पर स्थित सिंधु घाटी सभ्यता का प्रमुख प्राचीन बंदरगाह शहर था।"
         },
         {
           id: 2,
@@ -172,7 +205,7 @@
           question: "मानव शरीर में रक्त का शुद्धिकरण किस अंग में होता है?",
           options: ["हृदय", "फेफड़े", "वृक्क (Kidney)", "यकृत (Liver)"],
           correct: 2,
-          explanation: "वृक्क (Kidney) रक्त से यूरिया, अतिरिक्त लवण और विषाक्त पदार्थों को छानकर बाहर निकालने का कार्य करता है।"
+          explanation: "वृक्क (Kidney) रक्त से यूरिया, अतिरिक्त लवण और विषाक्त पदार्थों को छानकर अलग करता है।"
         }
       ]
     };
@@ -185,13 +218,12 @@
     function initMCQPage() {
       const urlParams = new URLSearchParams(window.location.search);
       const subjectKey = urlParams.get('subject') || 'default';
+      const topicKey = urlParams.get('topic') || '';
 
-      // Load specific subject or default questions
-      questions = QUESTION_BANK[subjectKey] || QUESTION_BANK.default;
+      questions = QUESTION_BANK[topicKey] || QUESTION_BANK[subjectKey] || QUESTION_BANK.default;
 
-      // Update header details
       document.getElementById("subject-title").textContent = 
-        subjectKey.replace('_', ' ').toUpperCase();
+        (topicKey || subjectKey).replace(/_/g, ' ').toUpperCase();
 
       loadQuestion(0);
     }
@@ -202,21 +234,17 @@
 
       const q = questions[currentIndex];
 
-      // Update Question text & counters
       document.getElementById("question-index-badge").textContent = `Question ${currentIndex + 1} of ${questions.length}`;
       document.getElementById("question-text").textContent = q.question;
       
-      // Update Progress Bar
       const progressPercent = ((currentIndex + 1) / questions.length) * 100;
       document.getElementById("progress-bar").style.width = `${progressPercent}%`;
 
-      // Update buttons state
       document.getElementById("prev-btn").disabled = (currentIndex === 0);
       document.getElementById("next-btn").innerHTML = (currentIndex === questions.length - 1)
-        ? `Finish Quiz <i class="fa-solid fa-flag-checkered text-[10px]"></i>`
+        ? `Finish & View Analysis <i class="fa-solid fa-chart-simple text-[10px]"></i>`
         : `Next Question <i class="fa-solid fa-chevron-right text-[10px]"></i>`;
 
-      // Render Options
       const optionsContainer = document.getElementById("options-container");
       optionsContainer.innerHTML = "";
 
@@ -231,12 +259,10 @@
 
         if (hasAnswered) {
           if (optIdx === q.correct) {
-            // Sahi answer styling
             cardClasses = "bg-emerald-50 border-emerald-500 text-emerald-900";
             badgeClasses = "bg-emerald-500 text-white border-emerald-500";
             iconHtml = `<i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>`;
           } else if (optIdx === selectedOpt) {
-            // Galat choose kiya hua option
             cardClasses = "bg-rose-50 border-rose-500 text-rose-900";
             badgeClasses = "bg-rose-500 text-white border-rose-500";
             iconHtml = `<i class="fa-solid fa-circle-xmark text-rose-600 text-base"></i>`;
@@ -262,7 +288,6 @@
         optionsContainer.appendChild(btn);
       });
 
-      // Explanation display
       const explBox = document.getElementById("explanation-box");
       const explText = document.getElementById("explanation-text");
 
@@ -277,20 +302,16 @@
     }
 
     function handleSelectOption(optIdx) {
-      if (selectedAnswers.hasOwnProperty(currentIndex)) return; // prevent multiple clicks
+      if (selectedAnswers.hasOwnProperty(currentIndex)) return;
 
       selectedAnswers[currentIndex] = optIdx;
       const q = questions[currentIndex];
       const isRight = (optIdx === q.correct);
 
-      if (isRight) {
-        correctCount++;
-      }
+      if (isRight) correctCount++;
 
-      // Re-render question to apply colors
       loadQuestion(currentIndex);
 
-      // Trigger animation class
       const renderedCards = document.querySelectorAll(".option-card");
       if (isRight) {
         renderedCards[optIdx].classList.add("correct-anim");
@@ -303,14 +324,12 @@
       if (currentIndex < questions.length - 1) {
         loadQuestion(currentIndex + 1);
       } else {
-        alert(`Quiz Finished!\nAapka Score: ${correctCount} / ${questions.length}`);
+        showAnalysisScreen();
       }
     }
 
     function prevQuestion() {
-      if (currentIndex > 0) {
-        loadQuestion(currentIndex - 1);
-      }
+      if (currentIndex > 0) loadQuestion(currentIndex - 1);
     }
 
     function updateScoreBadge() {
@@ -318,18 +337,77 @@
       document.getElementById("score-counter").textContent = `${correctCount} / ${answeredTotal}`;
     }
 
-    function bookmarkQuestion() {
-      const icon = document.getElementById("bookmark-icon");
-      if (icon.classList.contains("fa-regular")) {
-        icon.classList.remove("fa-regular");
-        icon.classList.add("fa-solid", "text-amber-500");
-      } else {
-        icon.classList.remove("fa-solid", "text-amber-500");
-        icon.classList.add("fa-regular");
-      }
+    // ==========================================
+    // DEEP ANALYSIS SCREEN RENDER
+    // ==========================================
+    function showAnalysisScreen() {
+      document.getElementById("quiz-screen").classList.add("hidden");
+      document.getElementById("quiz-footer").classList.add("hidden");
+      document.getElementById("analysis-screen").classList.remove("hidden");
+
+      const total = questions.length;
+      const answered = Object.keys(selectedAnswers).length;
+      const wrong = answered - correctCount;
+      const accuracy = answered > 0 ? Math.round((correctCount / answered) * 100) : 0;
+
+      document.getElementById("anal-correct").textContent = correctCount;
+      document.getElementById("anal-wrong").textContent = wrong;
+      document.getElementById("anal-accuracy").textContent = `${accuracy}%`;
+
+      const listContainer = document.getElementById("analysis-list");
+      listContainer.innerHTML = "";
+
+      questions.forEach((q, idx) => {
+        const userChoice = selectedAnswers[idx];
+        const hasAttempted = selectedAnswers.hasOwnProperty(idx);
+        const isCorrect = (userChoice === q.correct);
+
+        let statusBadge = "";
+        let borderClass = "";
+
+        if (!hasAttempted) {
+          statusBadge = `<span class="bg-slate-100 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded">Skipped</span>`;
+          borderClass = "border-slate-200";
+        } else if (isCorrect) {
+          statusBadge = `<span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">Correct (+1)</span>`;
+          borderClass = "border-emerald-300";
+        } else {
+          statusBadge = `<span class="bg-rose-100 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded">Wrong</span>`;
+          borderClass = "border-rose-300";
+        }
+
+        const card = document.createElement("div");
+        card.className = `bg-white border ${borderClass} rounded-2xl p-4 shadow-sm`;
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-400">Q.${idx + 1}</span>
+            ${statusBadge}
+          </div>
+          <p class="font-bold text-xs text-slate-800 mb-3">${q.question}</p>
+          
+          <div class="space-y-1.5 text-xs mb-3">
+            <div class="p-2 rounded-lg ${hasAttempted && !isCorrect ? 'bg-rose-50 text-rose-800 font-semibold' : 'bg-slate-50 text-slate-600'}">
+              <span class="font-bold">Your Answer:</span> ${hasAttempted ? q.options[userChoice] : "None"}
+            </div>
+            <div class="p-2 rounded-lg bg-emerald-50 text-emerald-800 font-semibold">
+              <span class="font-bold">Correct Answer:</span> ${q.options[q.correct]}
+            </div>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-2.5 text-[11px] text-slate-600">
+            <span class="font-bold text-slate-800 block mb-0.5">Explanation:</span>
+            ${q.explanation}
+          </div>
+        `;
+        listContainer.appendChild(card);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     document.addEventListener("DOMContentLoaded", initMCQPage);
   </script>
 </body>
-</html>
+  </html>
+  
