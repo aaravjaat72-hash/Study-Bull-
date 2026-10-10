@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title id="subjects-page-title">Subjects - Study Bull</title>
+  <title id="subjects-page-title">Subjects & Topics - Study Bull</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -21,58 +21,56 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
-    .folder-card {
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-    .folder-card:active {
-      transform: scale(0.97);
+    .topic-accordion {
+      transition: max-height 0.3s ease-out, opacity 0.25s ease;
     }
   </style>
 </head>
 <body class="bg-[#f4f7fb] min-h-screen text-slate-800 pb-12 select-none">
 
-  <!-- TOP HEADER WITH BACK BUTTON -->
+  <!-- TOP HEADER -->
   <header class="bg-[#0b47b3] text-white py-3.5 px-4 shadow sticky top-0 z-50">
     <div class="max-w-md mx-auto flex items-center gap-3">
-      <!-- Back to Home Button -->
+      <!-- Back Button -->
       <a href="index.html" class="w-9 h-9 bg-white/10 hover:bg-white/20 active:bg-white/30 rounded-xl flex items-center justify-center text-white transition flex-shrink-0">
         <i class="fa-solid fa-arrow-left text-base"></i>
       </a>
       <div class="truncate">
-        <h1 id="category-heading" class="text-lg font-bold leading-tight truncate">Select Subject</h1>
-        <p id="category-subheading" class="text-[11px] text-blue-200 font-medium">Choose a topic to start practice</p>
+        <h1 id="category-heading" class="text-base font-bold leading-tight truncate">Subjects &amp; Topics</h1>
+        <p id="category-subheading" class="text-[11px] text-blue-200 font-medium">Select a topic folder to start</p>
       </div>
     </div>
   </header>
 
-  <!-- SUBJECTS / FOLDERS CONTAINER -->
+  <!-- MAIN CONTAINER -->
   <main class="max-w-md mx-auto p-4">
-    <!-- Search Bar for Topics -->
+    <!-- Search Bar -->
     <div class="relative mb-4">
       <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
       <input 
         type="text" 
-        id="subject-search" 
-        placeholder="Search subject or topic..." 
+        id="search-input" 
+        placeholder="Search subject or topic chapter..." 
         class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 shadow-sm"
-        oninput="filterSubjects()"
+        oninput="filterTopics()"
       />
     </div>
 
-    <!-- Subjects List / Grid -->
+    <!-- Subjects & Topics Accordion List -->
     <div id="subjects-container" class="space-y-3">
-      <!-- Dynamic Subject Folders JS se render honge -->
+      <!-- Folders dynamically render honge -->
     </div>
   </main>
 
   <!-- ========================================== -->
-  <!-- CONFIGURATION & DYNAMIC RENDER LOGIC       -->
+  <!-- CONFIGURATION & DYNAMIC DATA ENGINE        -->
   <!-- ========================================== -->
   <script>
     /*
       ===============================================================
-      CATEGORY WISE SUBJECTS DATA:
-      Future me kisi bhi category ke subjects badhane ke liye yahan add karein.
+      SUBJECTS + CHAPTERS/TOPICS STRUCTURE:
+      Future me kisi bhi subject ke andar naya chapter add karne ke liye
+      topics array me bas `{ id: '...', name: '...', count: '...' }` add karein.
       ===============================================================
     */
     const CATEGORY_DATA = {
@@ -80,120 +78,243 @@
         title: "SSC Exams",
         subtitle: "CGL, MTS, CHSL, GD Special",
         subjects: [
-          { id: "history", name: "Indian History", desc: "Ancient, Medieval & Modern", icon: "fa-monument", color: "text-amber-500", bg: "bg-amber-50", count: "450+ MCQs" },
-          { id: "geography", name: "Geography", desc: "Indian & World Geography", icon: "fa-earth-asia", color: "text-blue-500", bg: "bg-blue-50", count: "380+ MCQs" },
-          { id: "polity", name: "Indian Polity", desc: "Constitution & Articles", icon: "fa-scale-balanced", color: "text-indigo-500", bg: "bg-indigo-50", count: "320+ MCQs" },
-          { id: "science", name: "General Science", desc: "Physics, Chem & Biology", icon: "fa-flask-vial", color: "text-emerald-500", bg: "bg-emerald-50", count: "500+ MCQs" },
-          { id: "maths", name: "Quantitative Aptitude", desc: "Arithmetic & Advanced", icon: "fa-calculator", color: "text-red-500", bg: "bg-red-50", count: "600+ MCQs" },
-          { id: "reasoning", name: "Reasoning Ability", desc: "Verbal & Non-Verbal", icon: "fa-brain", color: "text-purple-500", bg: "bg-purple-50", count: "400+ MCQs" }
+          {
+            id: "history",
+            name: "Indian History",
+            desc: "NCERT & Previous Year Topics",
+            icon: "fa-landmark",
+            color: "text-amber-500",
+            bg: "bg-amber-50",
+            topics: [
+              { id: "ancient_history", name: "Ancient India (प्राचीन भारत)", count: "120 MCQs" },
+              { id: "medieval_history", name: "Medieval India (मध्यकालीन भारत)", count: "150 MCQs" },
+              { id: "modern_history", name: "Modern India & Freedom (आधुनिक भारत)", count: "180 MCQs" }
+            ]
+          },
+          {
+            id: "polity",
+            name: "Indian Polity",
+            desc: "Constitution, Articles & Parliament",
+            icon: "fa-scale-balanced",
+            color: "text-indigo-500",
+            bg: "bg-indigo-50",
+            topics: [
+              { id: "preamble_articles", name: "Preamble & Important Articles", count: "110 MCQs" },
+              { id: "parliament_judiciary", name: "Parliament & Supreme Court", count: "130 MCQs" },
+              { id: "panchayati_raj", name: "Panchayati Raj & Amendments", count: "80 MCQs" }
+            ]
+          },
+          {
+            id: "geography",
+            name: "Geography",
+            desc: "Indian Rivers, Mountains & Climate",
+            icon: "fa-earth-asia",
+            color: "text-blue-500",
+            bg: "bg-blue-50",
+            topics: [
+              { id: "indian_rivers", name: "Indian Rivers & Lakes (नदियां व झीलें)", count: "95 MCQs" },
+              { id: "mountains_climate", name: "Mountains & Climate of India", count: "140 MCQs" },
+              { id: "solar_system", name: "Solar System & Earth Basics", count: "75 MCQs" }
+            ]
+          },
+          {
+            id: "science",
+            name: "General Science",
+            desc: "Physics, Chemistry & Biology",
+            icon: "fa-flask-vial",
+            color: "text-emerald-500",
+            bg: "bg-emerald-50",
+            topics: [
+              { id: "biology_human", name: "Human Physiology & Diseases", count: "180 MCQs" },
+              { id: "physics_units", name: "Units, Light & Mechanics", count: "120 MCQs" },
+              { id: "chemistry_elements", name: "Chemical Reactions & Everyday Chem", count: "110 MCQs" }
+            ]
+          }
         ]
       },
       statepcs: {
         title: "State PCS",
-        subtitle: "BPSC, UPPSC, RAS & State GS",
+        subtitle: "BPSC, UPPSC, RAS & Special GS",
         subjects: [
-          { id: "history", name: "History of India", desc: "NCERT & Advanced MCQs", icon: "fa-landmark", color: "text-amber-500", bg: "bg-amber-50", count: "650+ MCQs" },
-          { id: "polity", name: "Indian Constitution", desc: "Governance & Polity", icon: "fa-scale-balanced", color: "text-indigo-500", bg: "bg-indigo-50", count: "420+ MCQs" },
-          { id: "geography", name: "Geography & Ecology", desc: "Physical & Economic", icon: "fa-mountain-sun", color: "text-emerald-500", bg: "bg-emerald-50", count: "390+ MCQs" },
-          { id: "economy", name: "Indian Economy", desc: "Budget, Schemes & Basics", icon: "fa-chart-line", color: "text-teal-500", bg: "bg-teal-50", count: "280+ MCQs" }
+          {
+            id: "history",
+            name: "Indian History & Culture",
+            desc: "Art, Architecture & National Movement",
+            icon: "fa-monument",
+            color: "text-amber-500",
+            bg: "bg-amber-50",
+            topics: [
+              { id: "modern_history", name: "National Movement (1857 - 1947)", count: "210 MCQs" },
+              { id: "art_culture", name: "Indian Art & Architecture", count: "140 MCQs" }
+            ]
+          },
+          {
+            id: "economy",
+            name: "Indian Economy",
+            desc: "Budget, Banking & NITI Aayog",
+            icon: "fa-chart-line",
+            color: "text-teal-500",
+            bg: "bg-teal-50",
+            topics: [
+              { id: "budget_schemes", name: "Union Budget & Govt Schemes", count: "160 MCQs" },
+              { id: "rbi_monetary", name: "RBI & Monetary Policy", count: "120 MCQs" }
+            ]
+          }
         ]
       },
       defense: {
         title: "Police & Defense",
-        subtitle: "UP Police, Delhi Police & GD",
+        subtitle: "UP Police, Delhi Police & SSC GD",
         subjects: [
-          { id: "gs", name: "General Knowledge (GK)", desc: "Static GK & Current", icon: "fa-shield-halved", color: "text-blue-500", bg: "bg-blue-50", count: "800+ MCQs" },
-          { id: "hindi", name: "General Hindi", desc: "Vyakaran & Sahitya", icon: "fa-book", color: "text-orange-500", bg: "bg-orange-50", count: "450+ MCQs" },
-          { id: "maths", name: "Elementary Maths", desc: "Quick Numerical Ability", icon: "fa-calculator", color: "text-emerald-500", bg: "bg-emerald-50", count: "350+ MCQs" },
-          { id: "reasoning", name: "Mental Aptitude & Reasoning", desc: "Logic & IQ Tests", icon: "fa-brain", color: "text-purple-500", bg: "bg-purple-50", count: "500+ MCQs" }
-        ]
-      },
-      banking: {
-        title: "Banking & Insurance",
-        subtitle: "SBI, IBPS, RBI, RRB",
-        subjects: [
-          { id: "banking_awareness", name: "Banking Awareness", desc: "RBI circulars & Terms", icon: "fa-building-columns", color: "text-teal-500", bg: "bg-teal-50", count: "350+ MCQs" },
-          { id: "reasoning", name: "Puzzles & Reasoning", desc: "Prelims & Mains Level", icon: "fa-puzzle-piece", color: "text-purple-500", bg: "bg-purple-50", count: "600+ MCQs" },
-          { id: "quant", name: "Data Interpretation & Quant", desc: "Speed Maths & DI", icon: "fa-chart-pie", color: "text-rose-500", bg: "bg-rose-50", count: "450+ MCQs" },
-          { id: "english", name: "English Language", desc: "Grammar & Comprehension", icon: "fa-spell-check", color: "text-indigo-500", bg: "bg-indigo-50", count: "500+ MCQs" }
-        ]
-      },
-      hub: {
-        title: "Test Hub MCQs",
-        subtitle: "All Subjects Library",
-        subjects: [
-          { id: "history", name: "History Master Library", desc: "Chapterwise All Eras", icon: "fa-monument", color: "text-amber-500", bg: "bg-amber-50", count: "1200+ MCQs" },
-          { id: "geography", name: "Geography Atlas MCQs", desc: "Maps & Physical World", icon: "fa-earth-americas", color: "text-sky-500", bg: "bg-sky-50", count: "900+ MCQs" },
-          { id: "science", name: "Science Explorer", desc: "Phy, Chem, Bio Mixed", icon: "fa-atom", color: "text-emerald-500", bg: "bg-emerald-50", count: "1500+ MCQs" }
+          {
+            id: "gs",
+            name: "General Knowledge (GK)",
+            desc: "Static GK, Awards & Books",
+            icon: "fa-shield-halved",
+            color: "text-blue-500",
+            bg: "bg-blue-50",
+            topics: [
+              { id: "static_gk", name: "Important Days, Books & Authors", count: "220 MCQs" },
+              { id: "first_in_india", name: "First in India (Male/Female)", count: "130 MCQs" }
+            ]
+          },
+          {
+            id: "hindi",
+            name: "General Hindi",
+            desc: "Grammar, Muhavare & Sandhi",
+            icon: "fa-book",
+            color: "text-orange-500",
+            bg: "bg-orange-50",
+            topics: [
+              { id: "hindi_sandhi", name: "Sandhi & Samas (संधि और समास)", count: "150 MCQs" },
+              { id: "hindi_vilom", name: "Vilom & Paryayvachi Shabda", count: "190 MCQs" }
+            ]
+          }
         ]
       }
     };
 
-    let currentSubjectsList = [];
+    let currentData = null;
+    let activeCategory = 'ssc';
+    let openSubjectId = null;
 
-    function renderSubjectPage() {
-      // 1. URL se category query read karein (e.g. ?cat=ssc)
+    function initPage() {
       const urlParams = new URLSearchParams(window.location.search);
-      const catKey = urlParams.get('cat') || 'ssc';
+      activeCategory = urlParams.get('cat') || 'ssc';
 
-      // 2. Data retrieve karein
-      const data = CATEGORY_DATA[catKey] || CATEGORY_DATA.ssc;
-      currentSubjectsList = data.subjects;
+      currentData = CATEGORY_DATA[activeCategory] || CATEGORY_DATA.ssc;
 
-      // 3. UI Heading update karein
-      document.getElementById("category-heading").textContent = data.title;
-      document.getElementById("category-subheading").textContent = data.subtitle;
-      document.getElementById("subjects-page-title").textContent = `${data.title} - Study Bull`;
+      document.getElementById("category-heading").textContent = currentData.title;
+      document.getElementById("category-subheading").textContent = currentData.subtitle;
+      document.getElementById("subjects-page-title").textContent = `${currentData.title} - Study Bull`;
 
-      displaySubjects(currentSubjectsList, catKey);
+      renderList(currentData.subjects);
     }
 
-    function displaySubjects(list, catKey) {
+    function renderList(subjectsList) {
       const container = document.getElementById("subjects-container");
 
-      if (list.length === 0) {
+      if (subjectsList.length === 0) {
         container.innerHTML = `
           <div class="text-center py-12 text-slate-400">
             <i class="fa-solid fa-folder-open text-4xl mb-2 text-slate-300"></i>
-            <p class="text-sm font-semibold">Koi subject nahi mila</p>
+            <p class="text-xs font-semibold">Koi subject ya topic nahi mila</p>
           </div>
         `;
         return;
       }
 
-      container.innerHTML = list.map(sub => `
-        <a href="mcq.html?cat=${catKey}&subject=${sub.id}" class="folder-card bg-white border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between shadow-sm hover:border-blue-400 block">
-          <div class="flex items-center gap-3.5">
-            <div class="w-12 h-12 ${sub.bg} ${sub.color} rounded-xl flex items-center justify-center text-xl flex-shrink-0">
-              <i class="fa-solid ${sub.icon}"></i>
+      container.innerHTML = subjectsList.map(sub => {
+        const isOpen = (openSubjectId === sub.id);
+        const totalTopics = sub.topics ? sub.topics.length : 0;
+
+        return `
+          <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden transition">
+            
+            <!-- Subject Header Card (Click to expand topics) -->
+            <button 
+              onclick="toggleSubject('${sub.id}')" 
+              class="w-full p-3.5 flex items-center justify-between text-left active:bg-slate-50 transition">
+              
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 ${sub.bg} ${sub.color} rounded-xl flex items-center justify-center text-lg flex-shrink-0">
+                  <i class="fa-solid ${sub.icon}"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-800 text-sm leading-tight">${sub.name}</h3>
+                  <p class="text-[11px] text-slate-400 font-medium mt-0.5">${sub.desc}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md whitespace-nowrap">
+                  ${totalTopics} Topics
+                </span>
+                <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180 text-blue-600' : ''}"></i>
+              </div>
+
+            </button>
+
+            <!-- Topics Sub-folder List (Expandable) -->
+            <div class="${isOpen ? 'block' : 'hidden'} border-t border-slate-100 bg-[#fbfcfd] px-3.5 py-2.5 space-y-2">
+              ${sub.topics.map((t, idx) => `
+                <a href="mcq.html?cat=${activeCategory}&subject=${sub.id}&topic=${t.id}" 
+                   class="bg-white border border-slate-200/80 hover:border-blue-400 rounded-xl p-2.5 flex items-center justify-between active:scale-[0.98] transition shadow-xs block">
+                  
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 font-black text-[10px] flex items-center justify-center">
+                      ${idx + 1}
+                    </span>
+                    <span class="text-xs font-semibold text-slate-700 leading-snug">${t.name}</span>
+                  </div>
+
+                  <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <span class="text-[10px] text-slate-400 font-bold">${t.count}</span>
+                    <i class="fa-solid fa-play text-[9px] text-blue-600 bg-blue-50 p-1.5 rounded-full"></i>
+                  </div>
+
+                </a>
+              `).join("")}
             </div>
-            <div>
-              <h3 class="font-bold text-slate-800 text-[15px] leading-snug">${sub.name}</h3>
-              <p class="text-[12px] text-slate-400 font-medium">${sub.desc}</p>
-            </div>
+
           </div>
-          <div class="flex items-center gap-2 flex-shrink-0">
-            <span class="text-[11px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-lg">${sub.count}</span>
-            <i class="fa-solid fa-chevron-right text-xs text-slate-300"></i>
-          </div>
-        </a>
-      `).join("");
+        `;
+      }).join("");
     }
 
-    // Search filter
-    function filterSubjects() {
-      const query = document.getElementById("subject-search").value.toLowerCase();
-      const urlParams = new URLSearchParams(window.location.search);
-      const catKey = urlParams.get('cat') || 'ssc';
-
-      const filtered = currentSubjectsList.filter(s => 
-        s.name.toLowerCase().includes(query) || s.desc.toLowerCase().includes(query)
-      );
-      displaySubjects(filtered, catKey);
+    function toggleSubject(id) {
+      openSubjectId = (openSubjectId === id) ? null : id;
+      renderList(currentData.subjects);
     }
 
-    document.addEventListener("DOMContentLoaded", renderSubjectPage);
+    function filterTopics() {
+      const q = document.getElementById("search-input").value.toLowerCase();
+      if (!q) {
+        renderList(currentData.subjects);
+        return;
+      }
+
+      const filtered = currentData.subjects.map(sub => {
+        const matchedTopics = sub.topics.filter(t => t.name.toLowerCase().includes(q));
+        const subMatches = sub.name.toLowerCase().includes(q) || sub.desc.toLowerCase().includes(q);
+
+        if (subMatches || matchedTopics.length > 0) {
+          return {
+            ...sub,
+            topics: matchedTopics.length > 0 ? matchedTopics : sub.topics
+          };
+        }
+        return null;
+      }).filter(Boolean);
+
+      // Auto expand on search
+      if (filtered.length > 0) {
+        openSubjectId = filtered[0].id;
+      }
+      renderList(filtered);
+    }
+
+    document.addEventListener("DOMContentLoaded", initPage);
   </script>
 </body>
-  </html>
-  
+</html>
