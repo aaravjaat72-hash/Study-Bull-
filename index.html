@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Study Bull - Online MCQ & Mock Test</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Scrollbar hide for horizontal nav tabs */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Smooth button press bounce */
+    .card-btn {
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    .card-btn:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 pb-12 select-none">
+
+  <!-- TOP HEADER -->
+  <header class="bg-[#0b47b3] text-white pt-4 pb-2 px-4 shadow sticky top-0 z-50">
+    <div class="max-w-md mx-auto">
+      
+      <!-- Brand Logo & Title -->
+      <div class="flex items-center gap-3">
+        <div id="brand-logo" class="w-10 h-10 bg-white text-[#0b47b3] font-black text-xl flex items-center justify-center rounded-xl shadow-sm border border-blue-200">
+          SB
+        </div>
+        <div>
+          <h1 class="text-xl font-bold leading-none tracking-tight">Study Bull</h1>
+          <p class="text-[11px] text-blue-200 font-medium mt-1">Online MCQs &amp; Mock Tests</p>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs (Scrollable) -->
+      <nav class="flex items-center gap-6 mt-4 overflow-x-auto text-[13px] font-semibold whitespace-nowrap no-scrollbar pb-1">
+        <a href="index.html" class="border-b-2 border-white pb-1 font-bold text-white">HOME</a>
+        <a href="subjects.html?cat=ssc" class="text-blue-200 hover:text-white transition">SSC</a>
+        <a href="subjects.html?cat=statepcs" class="text-blue-200 hover:text-white transition">State PCS</a>
+        <a href="subjects.html?cat=police" class="text-blue-200 hover:text-white transition">Police &amp; Defense</a>
+        <a href="subjects.html?cat=banking" class="text-blue-200 hover:text-white transition">Banking</a>
+        <a href="subjects.html?cat=railway" class="text-blue-200 hover:text-white transition">Railway</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- MAIN DASHBOARD: 2-COLUMN GRID BUTTONS -->
+  <main class="max-w-md mx-auto p-4">
+    <div class="grid grid-cols-2 gap-3.5">
+
+      <!-- 1. State PCS -->
+      <a href="subjects.html?cat=statepcs" class="card-btn relative bg-white border border-slate-200 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm">
+        <div class="w-14 h-14 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
+          <i class="fa-solid fa-landmark"></i>
+        </div>
+        <h3 class="font-bold text-slate-800 text-[15px]">State PCS</h3>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">BPSC, UPPSC, RAS</p>
+      </a>
+
+      <!-- 2. SSC Exams -->
+      <a href="subjects.html?cat=ssc" class="card-btn relative bg-white border border-slate-200 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm">
+        <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <h3 class="font-bold text-slate-800 text-[15px]">SSC Exams</h3>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">CGL, MTS, CHSL, GD</p>
+      </a>
+
+      <!-- 3. Banking -->
+      <a href="subjects.html?cat=banking" class="card-btn relative bg-white border border-slate-200 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm">
+        <div class="w-14 h-14 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>
+        <h3 class="font-bold text-slate-800 text-[15px]">Banking</h3>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">SBI, IBPS, RBI</p>
+      </a>
+
+      <!-- 4. Daily CA (LIVE Badge) -->
+      <a href="mcq.html?subject=current_affairs" class="card-btn relative bg-white border border-slate-200 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm">
+        <span class="absolute top-2.5 right-2.5 bg-red-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-wider animate-pulse">
+          LIVE
+        </span>
+        <div class="w-14 h-14 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
+          <i class="fa-solid fa-newspaper"></i>
+        </div>
+        <h3 class="font-bold text-slate-800 text-[15px]">Daily CA</h3>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">Daily Updates</p>
+      </a>
+
+      <!-- 5. Test Hub MCQs -->
+      <a href="subjects.html?cat=hub" class="card-btn relative bg-white border border-slate-200 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm">
+        <div class="w-14 h-14 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
+          <i class="fa-solid fa-book-open"></i>
+        </div>
+        <h3 class="font-bold text-slate-800 text-[15px]">Test Hub MCQs</h3>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">History, Sci, Geo</p>
+      </a>
+
+      <!-- 6. Typing Test (NEW Badge) -->
+      <a href="typing-test.html" class="card-btn relative bg-white border border-slate-200 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm">
+        <span class="absolute top-2.5 right-2.5 bg-emerald-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-wider">
+          NEW
+        </span>
+        <div class="w-14 h-14 bg-cyan-50 text-cyan-600 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
+          <i class="fa-solid fa-keyboard"></i>
+        </div>
+        <h3 class="font-bold text-slate-800 text-[15px]">Typing Test</h3>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">Hindi &amp; English</p>
+      </a>
+
+      <!-- 7. Defense & Police (NEW Badge) -->
+      <a href="subjects.html?cat=defense" class="card-btn relative bg-white border border-slate-200 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm">
+        <span class="absolute top-2.5 right-2.5 bg-emerald-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-wider">
+          NEW
+        </span>
+        <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3 class="font-bold text-slate-800 text-[15px]">Police &amp; Defense</h3>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">UPP, Delhi Police</p>
+      </a>
+
+      <!-- 8. Full Mock Test (Dashed Border Card) -->
+      <a href="mock-test.html" class="card-btn relative bg-slate-50 border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-none">
+        <div class="w-14 h-14 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
+          <i class="fa-solid fa-rocket"></i>
+        </div>
+        <h3 class="font-bold text-slate-700 text-[15px]">Real Mock Test</h3>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">Exam Simulation</p>
+      </a>
+
+    </div>
+  </main>
+
+</body>
+  </html>
+  
