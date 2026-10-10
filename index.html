@@ -5,8 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Study Bull - Online Portal</title>
   
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+  <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,17 +20,18 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
-    .action-card {
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    /* Smooth Tap / Bounce Animation */
+    .block-card {
+      transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease, border-color 0.16s ease;
     }
-    .action-card:active {
-      transform: scale(0.97);
+    .block-card:active {
+      transform: scale(0.94);
     }
   </style>
 </head>
 <body class="bg-[#f4f7fb] min-h-screen text-slate-800 pb-12 select-none">
 
-  <!-- HEADER -->
+  <!-- TOP HEADER -->
   <header class="bg-[#0b47b3] text-white py-3.5 px-4 shadow sticky top-0 z-50">
     <div class="max-w-md mx-auto flex items-center gap-3">
       <div class="w-11 h-11 bg-white text-[#0b47b3] font-black text-xl flex items-center justify-center rounded-xl shadow-sm border border-blue-200 flex-shrink-0">
@@ -34,79 +39,64 @@
       </div>
       <div>
         <h1 class="text-xl font-extrabold leading-tight tracking-tight">Study Bull</h1>
-        <p class="text-xs text-blue-200 font-medium">MCQs, Mock Tests &amp; Study Notes</p>
+        <p class="text-xs text-blue-200 font-medium">Topic Quiz • Real Mock • PDF Notes</p>
       </div>
     </div>
   </header>
 
-  <!-- MAIN DASHBOARD -->
-  <main class="max-w-md mx-auto p-4 space-y-3.5">
+  <!-- MAIN 2-COLUMN GRID DASHBOARD -->
+  <main class="max-w-md mx-auto p-4">
+    <div class="grid grid-cols-2 gap-3.5">
 
-    <!-- 1. Topic-wise Quiz / MCQs -->
-    <a href="subjects.html" class="action-card bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-sm hover:border-blue-500 block">
-      <div class="flex items-center gap-3.5">
-        <div class="w-13 h-13 p-3 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">
+      <!-- 1. QUIZ (Topic-wise) -->
+      <a href="subjects.html" class="block-card relative bg-white border border-slate-200 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm">
+        <span class="absolute top-2.5 right-2.5 bg-blue-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-wider uppercase">
+          TOPIC
+        </span>
+        <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
           <i class="fa-solid fa-layer-group"></i>
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h2 class="font-extrabold text-slate-800 text-base">Topic-wise Quiz</h2>
-            <span class="bg-emerald-100 text-emerald-700 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Practice</span>
-          </div>
-          <p class="text-xs text-slate-400 font-medium mt-0.5">History, Geo, Polity, Math &amp; Reasoning</p>
-        </div>
-      </div>
-      <i class="fa-solid fa-chevron-right text-xs text-slate-300 pr-1"></i>
-    </a>
+        <h2 class="font-bold text-slate-800 text-[16px]">Quiz</h2>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">Topic-wise Practice</p>
+      </a>
 
-    <!-- 2. Real Mock Tests -->
-    <a href="mock-exams.html" class="action-card bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-sm hover:border-blue-500 block">
-      <div class="flex items-center gap-3.5">
-        <div class="w-13 h-13 p-3 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">
+      <!-- 2. MOCK (Full Exam Test) -->
+      <a href="mock-exams.html" class="block-card relative bg-white border border-slate-200 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm">
+        <span class="absolute top-2.5 right-2.5 bg-rose-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-wider animate-pulse uppercase">
+          LIVE
+        </span>
+        <div class="w-14 h-14 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
           <i class="fa-solid fa-stopwatch-20"></i>
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h2 class="font-extrabold text-slate-800 text-base">Mock Tests</h2>
-            <span class="bg-red-100 text-red-700 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Exam Mode</span>
-          </div>
-          <p class="text-xs text-slate-400 font-medium mt-0.5">CGL, CHSL, GD, Delhi Police (Test 1, 2...)</p>
-        </div>
-      </div>
-      <i class="fa-solid fa-chevron-right text-xs text-slate-300 pr-1"></i>
-    </a>
+        <h2 class="font-bold text-slate-800 text-[16px]">Mock</h2>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">CGL, GD, Police Test</p>
+      </a>
 
-    <!-- 3. Study Material & Notes -->
-    <a href="study-material.html" class="action-card bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-sm hover:border-blue-500 block">
-      <div class="flex items-center gap-3.5">
-        <div class="w-13 h-13 p-3 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">
+      <!-- 3. NOTES (Study Material & PDFs) -->
+      <a href="study-material.html" class="block-card relative bg-white border border-slate-200 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm">
+        <span class="absolute top-2.5 right-2.5 bg-emerald-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-wider uppercase">
+          FREE
+        </span>
+        <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
           <i class="fa-solid fa-file-pdf"></i>
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h2 class="font-extrabold text-slate-800 text-base">Study Material</h2>
-            <span class="bg-amber-100 text-amber-800 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">PDF Notes</span>
-          </div>
-          <p class="text-xs text-slate-400 font-medium mt-0.5">Topic-wise Notes with PDF Viewer &amp; Download</p>
-        </div>
-      </div>
-      <i class="fa-solid fa-chevron-right text-xs text-slate-300 pr-1"></i>
-    </a>
+        <h2 class="font-bold text-slate-800 text-[16px]">Notes</h2>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">PDF Viewer &amp; Download</p>
+      </a>
 
-    <!-- Quick Daily CA Banner (Bonus) -->
-    <a href="mcq.html?subject=current_affairs" class="action-card bg-gradient-to-r from-blue-700 to-indigo-800 text-white rounded-2xl p-4 flex items-center justify-between shadow-md block">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-lg">
-          <i class="fa-solid fa-bolt text-amber-300 animate-pulse"></i>
+      <!-- 4. DAILY CA (Extra Box) -->
+      <a href="mcq.html?subject=current_affairs" class="block-card relative bg-white border border-slate-200 hover:border-blue-500 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm">
+        <span class="absolute top-2.5 right-2.5 bg-amber-500 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-wider uppercase">
+          DAILY
+        </span>
+        <div class="w-14 h-14 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center text-2xl mb-2.5">
+          <i class="fa-solid fa-bolt"></i>
         </div>
-        <div>
-          <h3 class="font-bold text-sm">Daily Current Affairs Live</h3>
-          <p class="text-[11px] text-blue-200">Daily 10 fresh questions practice</p>
-        </div>
-      </div>
-      <span class="bg-rose-500 text-white text-[10px] font-extrabold px-2 py-1 rounded-lg">START</span>
-    </a>
+        <h2 class="font-bold text-slate-800 text-[16px]">Daily CA</h2>
+        <p class="text-[11px] text-slate-400 font-medium mt-0.5">Current Affairs Test</p>
+      </a>
 
+    </div>
   </main>
 
 </body>
