@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title id="mcq-page-title">Practice MCQs - Study Bull</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Option button standard state */
+    .option-card {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .option-card:active:not(.locked) {
+      transform: scale(0.98);
+    }
+
+    /* Option Animations */
+    @keyframes opt-pulse-correct {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes opt-shake-wrong {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    .correct-anim {
+      animation: opt-pulse-correct 0.35s ease;
+    }
+
+    .wrong-anim {
+      animation: opt-shake-wrong 0.4s ease;
+    }
+  </style>
+</head>
+<body class="bg-[#f4f7fb] min-h-screen text-slate-800 pb-24 select-none">
+
+  <!-- TOP HEADER -->
+  <header class="bg-[#0b47b3] text-white py-3.5 px-4 shadow sticky top-0 z-50">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <button onclick="window.history.back()" class="w-9 h-9 bg-white/10 hover:bg-white/20 active:bg-white/30 rounded-xl flex items-center justify-center text-white transition">
+          <i class="fa-solid fa-arrow-left text-base"></i>
+        </button>
+        <div>
+          <h1 id="subject-title" class="text-base font-bold leading-tight">MCQ Practice</h1>
+          <p id="mcq-subtitle" class="text-[11px] text-blue-200 font-medium">Practice &amp; Learn</p>
+        </div>
+      </div>
+      <!-- Progress Pill -->
+      <div class="bg-blue-900/60 border border-blue-400/30 px-3 py-1 rounded-full text-xs font-bold text-blue-100 flex items-center gap-1.5">
+        <i class="fa-regular fa-circle-check text-emerald-400"></i>
+        <span id="score-counter">0 / 0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN PRACTICE CONTAINER -->
+  <main class="max-w-md mx-auto p-4">
+
+    <!-- Progress Bar -->
+    <div class="w-full bg-slate-200 h-1.5 rounded-full mb-4 overflow-hidden">
+      <div id="progress-bar" class="bg-blue-600 h-full w-0 transition-all duration-300"></div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm mb-4 relative">
+      <div class="flex items-center justify-between mb-3">
+        <span id="question-index-badge" class="text-[11px] font-extrabold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">
+          Question 1
+        </span>
+        <button onclick="bookmarkQuestion()" class="text-slate-400 hover:text-amber-500 transition text-sm">
+          <i id="bookmark-icon" class="fa-regular fa-bookmark"></i>
+        </button>
+      </div>
+      <p id="question-text" class="text-[16px] font-bold text-slate-800 leading-relaxed">
+        Loading question...
+      </p>
+    </div>
+
+    <!-- Options Container -->
+    <div id="options-container" class="space-y-3">
+      <!-- Options dynamically JS se load honge -->
+    </div>
+
+    <!-- Explanation Box (Initially Hidden) -->
+    <div id="explanation-box" class="hidden mt-4 bg-emerald-50 border border-emerald-200 rounded-2xl p-4 shadow-sm transition-all duration-300">
+      <div class="flex items-center gap-2 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-1.5">
+        <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i>
+        <span>Explanation</span>
+      </div>
+      <p id="explanation-text" class="text-xs text-emerald-950 font-medium leading-relaxed"></p>
+    </div>
+
+  </main>
+
+  <!-- FIXED BOTTOM CONTROLS -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 py-3 px-4 shadow-lg z-40">
+    <div class="max-w-md mx-auto flex items-center justify-between gap-3">
+      <button 
+        id="prev-btn" 
+        onclick="prevQuestion()" 
+        class="w-1/3 py-2.5 bg-slate-100 active:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition disabled:opacity-40 disabled:cursor-not-allowed">
+        <i class="fa-solid fa-chevron-left text-[10px]"></i> Previous
+      </button>
+
+      <button 
+        id="next-btn" 
+        onclick="nextQuestion()" 
+        class="w-2/3 py-2.5 bg-[#0b47b3] active:bg-blue-800 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/20 transition">
+        Next Question <i class="fa-solid fa-chevron-right text-[10px]"></i>
+      </button>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- MCQ ENGINE SCRIPT                          -->
+  <!-- ========================================== -->
+  <script>
+    /*
+      ===============================================================
+      SAMPLE QUESTIONS DATA STRUCTURE:
+      Firebase se sync hone par bhi exact yahi structure store hoga.
+      ===============================================================
+    */
+    const QUESTION_BANK = {
+      default: [
+        {
+          id: 1,
+          question: "सिंधु घाटी सभ्यता का प्रमुख बंदरगाह नगर कौन सा था?",
+          options: ["कालीबंगा", "लोथल", "रोपड़", "मोहनजोदड़ो"],
+          correct: 1, // 0-based index: 1 means 'लोथल'
+          explanation: "लोथल गुजरात के भाल क्षेत्र में भोगवा नदी के तट पर स्थित सिंधु घाटी सभ्यता का प्रमुख प्राचीन बंदरगाह शहर था।"
+        },
+        {
+          id: 2,
+          question: "भारतीय संविधान की कौन सी अनुसूची भाषाओं से संबंधित है?",
+          options: ["7वीं अनुसूची", "8वीं अनुसूची", "9वीं अनुसूची", "10वीं अनुसूची"],
+          correct: 1,
+          explanation: "भारतीय संविधान की 8वीं अनुसूची में वर्तमान में 22 आधिकारिक भाषाओं का उल्लेख किया गया है।"
+        },
+        {
+          id: 3,
+          question: "कर्क रेखा भारत के कितने राज्यों से होकर गुजरती है?",
+          options: ["6", "7", "8", "9"],
+          correct: 2,
+          explanation: "कर्क रेखा भारत के 8 राज्यों (गुजरात, राजस्थान, मध्य प्रदेश, छत्तीसगढ़, झारखंड, पश्चिम बंगाल, त्रिपुरा, मिजोरम) से गुजरती है।"
+        },
+        {
+          id: 4,
+          question: "मानव शरीर में रक्त का शुद्धिकरण किस अंग में होता है?",
+          options: ["हृदय", "फेफड़े", "वृक्क (Kidney)", "यकृत (Liver)"],
+          correct: 2,
+          explanation: "वृक्क (Kidney) रक्त से यूरिया, अतिरिक्त लवण और विषाक्त पदार्थों को छानकर बाहर निकालने का कार्य करता है।"
+        }
+      ]
+    };
+
+    let questions = [];
+    let currentIndex = 0;
+    let selectedAnswers = {}; // { questionIndex: chosenOptionIndex }
+    let correctCount = 0;
+
+    function initMCQPage() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const subjectKey = urlParams.get('subject') || 'default';
+
+      // Load specific subject or default questions
+      questions = QUESTION_BANK[subjectKey] || QUESTION_BANK.default;
+
+      // Update header details
+      document.getElementById("subject-title").textContent = 
+        subjectKey.replace('_', ' ').toUpperCase();
+
+      loadQuestion(0);
+    }
+
+    function loadQuestion(index) {
+      if (index < 0 || index >= questions.length) return;
+      currentIndex = index;
+
+      const q = questions[currentIndex];
+
+      // Update Question text & counters
+      document.getElementById("question-index-badge").textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+      document.getElementById("question-text").textContent = q.question;
+      
+      // Update Progress Bar
+      const progressPercent = ((currentIndex + 1) / questions.length) * 100;
+      document.getElementById("progress-bar").style.width = `${progressPercent}%`;
+
+      // Update buttons state
+      document.getElementById("prev-btn").disabled = (currentIndex === 0);
+      document.getElementById("next-btn").innerHTML = (currentIndex === questions.length - 1)
+        ? `Finish Quiz <i class="fa-solid fa-flag-checkered text-[10px]"></i>`
+        : `Next Question <i class="fa-solid fa-chevron-right text-[10px]"></i>`;
+
+      // Render Options
+      const optionsContainer = document.getElementById("options-container");
+      optionsContainer.innerHTML = "";
+
+      const alphabet = ["A", "B", "C", "D"];
+      const hasAnswered = selectedAnswers.hasOwnProperty(currentIndex);
+      const selectedOpt = selectedAnswers[currentIndex];
+
+      q.options.forEach((optText, optIdx) => {
+        let cardClasses = "bg-white border-slate-200 text-slate-700";
+        let badgeClasses = "bg-slate-100 text-slate-600 border-slate-200";
+        let iconHtml = "";
+
+        if (hasAnswered) {
+          if (optIdx === q.correct) {
+            // Sahi answer styling
+            cardClasses = "bg-emerald-50 border-emerald-500 text-emerald-900";
+            badgeClasses = "bg-emerald-500 text-white border-emerald-500";
+            iconHtml = `<i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>`;
+          } else if (optIdx === selectedOpt) {
+            // Galat choose kiya hua option
+            cardClasses = "bg-rose-50 border-rose-500 text-rose-900";
+            badgeClasses = "bg-rose-500 text-white border-rose-500";
+            iconHtml = `<i class="fa-solid fa-circle-xmark text-rose-600 text-base"></i>`;
+          } else {
+            cardClasses = "bg-white border-slate-200 opacity-60 text-slate-500";
+          }
+        }
+
+        const btn = document.createElement("button");
+        btn.className = `option-card ${hasAnswered ? 'locked' : ''} w-full border-2 rounded-2xl p-3.5 flex items-center justify-between text-left shadow-sm ${cardClasses}`;
+        btn.onclick = () => handleSelectOption(optIdx);
+
+        btn.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="w-7 h-7 rounded-lg border flex items-center justify-center font-bold text-xs ${badgeClasses}">
+              ${alphabet[optIdx]}
+            </span>
+            <span class="font-semibold text-sm leading-snug">${optText}</span>
+          </div>
+          <div>${iconHtml}</div>
+        `;
+
+        optionsContainer.appendChild(btn);
+      });
+
+      // Explanation display
+      const explBox = document.getElementById("explanation-box");
+      const explText = document.getElementById("explanation-text");
+
+      if (hasAnswered) {
+        explText.textContent = q.explanation;
+        explBox.classList.remove("hidden");
+      } else {
+        explBox.classList.add("hidden");
+      }
+
+      updateScoreBadge();
+    }
+
+    function handleSelectOption(optIdx) {
+      if (selectedAnswers.hasOwnProperty(currentIndex)) return; // prevent multiple clicks
+
+      selectedAnswers[currentIndex] = optIdx;
+      const q = questions[currentIndex];
+      const isRight = (optIdx === q.correct);
+
+      if (isRight) {
+        correctCount++;
+      }
+
+      // Re-render question to apply colors
+      loadQuestion(currentIndex);
+
+      // Trigger animation class
+      const renderedCards = document.querySelectorAll(".option-card");
+      if (isRight) {
+        renderedCards[optIdx].classList.add("correct-anim");
+      } else {
+        renderedCards[optIdx].classList.add("wrong-anim");
+      }
+    }
+
+    function nextQuestion() {
+      if (currentIndex < questions.length - 1) {
+        loadQuestion(currentIndex + 1);
+      } else {
+        alert(`Quiz Finished!\nAapka Score: ${correctCount} / ${questions.length}`);
+      }
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        loadQuestion(currentIndex - 1);
+      }
+    }
+
+    function updateScoreBadge() {
+      const answeredTotal = Object.keys(selectedAnswers).length;
+      document.getElementById("score-counter").textContent = `${correctCount} / ${answeredTotal}`;
+    }
+
+    function bookmarkQuestion() {
+      const icon = document.getElementById("bookmark-icon");
+      if (icon.classList.contains("fa-regular")) {
+        icon.classList.remove("fa-regular");
+        icon.classList.add("fa-solid", "text-amber-500");
+      } else {
+        icon.classList.remove("fa-solid", "text-amber-500");
+        icon.classList.add("fa-regular");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", initMCQPage);
+  </script>
+</body>
+</html>
