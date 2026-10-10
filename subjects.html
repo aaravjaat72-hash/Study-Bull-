@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title id="subjects-page-title">Subjects - Study Bull</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .folder-card {
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .folder-card:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body class="bg-[#f4f7fb] min-h-screen text-slate-800 pb-12 select-none">
+
+  <!-- TOP HEADER WITH BACK BUTTON -->
+  <header class="bg-[#0b47b3] text-white py-3.5 px-4 shadow sticky top-0 z-50">
+    <div class="max-w-md mx-auto flex items-center gap-3">
+      <!-- Back to Home Button -->
+      <a href="index.html" class="w-9 h-9 bg-white/10 hover:bg-white/20 active:bg-white/30 rounded-xl flex items-center justify-center text-white transition flex-shrink-0">
+        <i class="fa-solid fa-arrow-left text-base"></i>
+      </a>
+      <div class="truncate">
+        <h1 id="category-heading" class="text-lg font-bold leading-tight truncate">Select Subject</h1>
+        <p id="category-subheading" class="text-[11px] text-blue-200 font-medium">Choose a topic to start practice</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- SUBJECTS / FOLDERS CONTAINER -->
+  <main class="max-w-md mx-auto p-4">
+    <!-- Search Bar for Topics -->
+    <div class="relative mb-4">
+      <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+      <input 
+        type="text" 
+        id="subject-search" 
+        placeholder="Search subject or topic..." 
+        class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 shadow-sm"
+        oninput="filterSubjects()"
+      />
+    </div>
+
+    <!-- Subjects List / Grid -->
+    <div id="subjects-container" class="space-y-3">
+      <!-- Dynamic Subject Folders JS se render honge -->
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- CONFIGURATION & DYNAMIC RENDER LOGIC       -->
+  <!-- ========================================== -->
+  <script>
+    /*
+      ===============================================================
+      CATEGORY WISE SUBJECTS DATA:
+      Future me kisi bhi category ke subjects badhane ke liye yahan add karein.
+      ===============================================================
+    */
+    const CATEGORY_DATA = {
+      ssc: {
+        title: "SSC Exams",
+        subtitle: "CGL, MTS, CHSL, GD Special",
+        subjects: [
+          { id: "history", name: "Indian History", desc: "Ancient, Medieval & Modern", icon: "fa-monument", color: "text-amber-500", bg: "bg-amber-50", count: "450+ MCQs" },
+          { id: "geography", name: "Geography", desc: "Indian & World Geography", icon: "fa-earth-asia", color: "text-blue-500", bg: "bg-blue-50", count: "380+ MCQs" },
+          { id: "polity", name: "Indian Polity", desc: "Constitution & Articles", icon: "fa-scale-balanced", color: "text-indigo-500", bg: "bg-indigo-50", count: "320+ MCQs" },
+          { id: "science", name: "General Science", desc: "Physics, Chem & Biology", icon: "fa-flask-vial", color: "text-emerald-500", bg: "bg-emerald-50", count: "500+ MCQs" },
+          { id: "maths", name: "Quantitative Aptitude", desc: "Arithmetic & Advanced", icon: "fa-calculator", color: "text-red-500", bg: "bg-red-50", count: "600+ MCQs" },
+          { id: "reasoning", name: "Reasoning Ability", desc: "Verbal & Non-Verbal", icon: "fa-brain", color: "text-purple-500", bg: "bg-purple-50", count: "400+ MCQs" }
+        ]
+      },
+      statepcs: {
+        title: "State PCS",
+        subtitle: "BPSC, UPPSC, RAS & State GS",
+        subjects: [
+          { id: "history", name: "History of India", desc: "NCERT & Advanced MCQs", icon: "fa-landmark", color: "text-amber-500", bg: "bg-amber-50", count: "650+ MCQs" },
+          { id: "polity", name: "Indian Constitution", desc: "Governance & Polity", icon: "fa-scale-balanced", color: "text-indigo-500", bg: "bg-indigo-50", count: "420+ MCQs" },
+          { id: "geography", name: "Geography & Ecology", desc: "Physical & Economic", icon: "fa-mountain-sun", color: "text-emerald-500", bg: "bg-emerald-50", count: "390+ MCQs" },
+          { id: "economy", name: "Indian Economy", desc: "Budget, Schemes & Basics", icon: "fa-chart-line", color: "text-teal-500", bg: "bg-teal-50", count: "280+ MCQs" }
+        ]
+      },
+      defense: {
+        title: "Police & Defense",
+        subtitle: "UP Police, Delhi Police & GD",
+        subjects: [
+          { id: "gs", name: "General Knowledge (GK)", desc: "Static GK & Current", icon: "fa-shield-halved", color: "text-blue-500", bg: "bg-blue-50", count: "800+ MCQs" },
+          { id: "hindi", name: "General Hindi", desc: "Vyakaran & Sahitya", icon: "fa-book", color: "text-orange-500", bg: "bg-orange-50", count: "450+ MCQs" },
+          { id: "maths", name: "Elementary Maths", desc: "Quick Numerical Ability", icon: "fa-calculator", color: "text-emerald-500", bg: "bg-emerald-50", count: "350+ MCQs" },
+          { id: "reasoning", name: "Mental Aptitude & Reasoning", desc: "Logic & IQ Tests", icon: "fa-brain", color: "text-purple-500", bg: "bg-purple-50", count: "500+ MCQs" }
+        ]
+      },
+      banking: {
+        title: "Banking & Insurance",
+        subtitle: "SBI, IBPS, RBI, RRB",
+        subjects: [
+          { id: "banking_awareness", name: "Banking Awareness", desc: "RBI circulars & Terms", icon: "fa-building-columns", color: "text-teal-500", bg: "bg-teal-50", count: "350+ MCQs" },
+          { id: "reasoning", name: "Puzzles & Reasoning", desc: "Prelims & Mains Level", icon: "fa-puzzle-piece", color: "text-purple-500", bg: "bg-purple-50", count: "600+ MCQs" },
+          { id: "quant", name: "Data Interpretation & Quant", desc: "Speed Maths & DI", icon: "fa-chart-pie", color: "text-rose-500", bg: "bg-rose-50", count: "450+ MCQs" },
+          { id: "english", name: "English Language", desc: "Grammar & Comprehension", icon: "fa-spell-check", color: "text-indigo-500", bg: "bg-indigo-50", count: "500+ MCQs" }
+        ]
+      },
+      hub: {
+        title: "Test Hub MCQs",
+        subtitle: "All Subjects Library",
+        subjects: [
+          { id: "history", name: "History Master Library", desc: "Chapterwise All Eras", icon: "fa-monument", color: "text-amber-500", bg: "bg-amber-50", count: "1200+ MCQs" },
+          { id: "geography", name: "Geography Atlas MCQs", desc: "Maps & Physical World", icon: "fa-earth-americas", color: "text-sky-500", bg: "bg-sky-50", count: "900+ MCQs" },
+          { id: "science", name: "Science Explorer", desc: "Phy, Chem, Bio Mixed", icon: "fa-atom", color: "text-emerald-500", bg: "bg-emerald-50", count: "1500+ MCQs" }
+        ]
+      }
+    };
+
+    let currentSubjectsList = [];
+
+    function renderSubjectPage() {
+      // 1. URL se category query read karein (e.g. ?cat=ssc)
+      const urlParams = new URLSearchParams(window.location.search);
+      const catKey = urlParams.get('cat') || 'ssc';
+
+      // 2. Data retrieve karein
+      const data = CATEGORY_DATA[catKey] || CATEGORY_DATA.ssc;
+      currentSubjectsList = data.subjects;
+
+      // 3. UI Heading update karein
+      document.getElementById("category-heading").textContent = data.title;
+      document.getElementById("category-subheading").textContent = data.subtitle;
+      document.getElementById("subjects-page-title").textContent = `${data.title} - Study Bull`;
+
+      displaySubjects(currentSubjectsList, catKey);
+    }
+
+    function displaySubjects(list, catKey) {
+      const container = document.getElementById("subjects-container");
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-slate-400">
+            <i class="fa-solid fa-folder-open text-4xl mb-2 text-slate-300"></i>
+            <p class="text-sm font-semibold">Koi subject nahi mila</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(sub => `
+        <a href="mcq.html?cat=${catKey}&subject=${sub.id}" class="folder-card bg-white border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between shadow-sm hover:border-blue-400 block">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 ${sub.bg} ${sub.color} rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+              <i class="fa-solid ${sub.icon}"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-800 text-[15px] leading-snug">${sub.name}</h3>
+              <p class="text-[12px] text-slate-400 font-medium">${sub.desc}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <span class="text-[11px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-lg">${sub.count}</span>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-300"></i>
+          </div>
+        </a>
+      `).join("");
+    }
+
+    // Search filter
+    function filterSubjects() {
+      const query = document.getElementById("subject-search").value.toLowerCase();
+      const urlParams = new URLSearchParams(window.location.search);
+      const catKey = urlParams.get('cat') || 'ssc';
+
+      const filtered = currentSubjectsList.filter(s => 
+        s.name.toLowerCase().includes(query) || s.desc.toLowerCase().includes(query)
+      );
+      displaySubjects(filtered, catKey);
+    }
+
+    document.addEventListener("DOMContentLoaded", renderSubjectPage);
+  </script>
+</body>
+  </html>
+  
