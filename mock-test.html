@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Real Mock Test - Study Bull</title>
+  <title>Real Mock Test & Analysis - Study Bull</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -28,22 +28,22 @@
 </head>
 <body class="bg-[#f4f7fb] min-h-screen text-slate-800 pb-24 select-none">
 
-  <!-- TOP HEADER WITH REAL TIMER -->
-  <header class="bg-[#0b47b3] text-white py-3 px-4 shadow sticky top-0 z-50">
+  <!-- TOP HEADER -->
+  <header id="exam-header" class="bg-[#0b47b3] text-white py-3 px-4 shadow sticky top-0 z-50">
     <div class="max-w-md mx-auto flex items-center justify-between">
       
-      <!-- Test Name -->
+      <!-- Exam Title -->
       <div class="flex items-center gap-2.5">
         <button onclick="confirmExit()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center text-white transition">
           <i class="fa-solid fa-arrow-left text-sm"></i>
         </button>
         <div>
           <h1 class="text-sm font-bold leading-tight">Full Mock Test #1</h1>
-          <p class="text-[10px] text-blue-200">10 Questions • 10 Mins</p>
+          <p class="text-[10px] text-blue-200">5 Questions • 10 Mins</p>
         </div>
       </div>
 
-      <!-- Live Countdown Timer & Palette Toggle -->
+      <!-- Live Timer & Palette Button -->
       <div class="flex items-center gap-2">
         <div class="bg-blue-950/80 border border-blue-400/30 px-2.5 py-1 rounded-lg flex items-center gap-1.5 text-xs font-bold text-amber-300">
           <i class="fa-regular fa-clock"></i>
@@ -58,13 +58,13 @@
     </div>
   </header>
 
-  <!-- QUESTION DISPLAY AREA -->
-  <main class="max-w-md mx-auto p-4">
+  <!-- SCREEN 1: REAL EXAM INTERFACE -->
+  <main id="exam-screen" class="max-w-md mx-auto p-4">
     
-    <!-- Meta details (Marks, Status) -->
+    <!-- Status & Marks Info -->
     <div class="flex items-center justify-between mb-3 text-xs">
       <span id="q-number-pill" class="font-extrabold text-blue-600 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-lg">
-        Q. 1 / 10
+        Q. 1 / 5
       </span>
       <div class="flex items-center gap-2 font-semibold">
         <span class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">+2.0</span>
@@ -79,12 +79,10 @@
       </p>
     </div>
 
-    <!-- Options List (Exam Radio Style) -->
-    <div id="mock-options-container" class="space-y-2.5">
-      <!-- Options render via JS -->
-    </div>
+    <!-- Radio Options -->
+    <div id="mock-options-container" class="space-y-2.5"></div>
 
-    <!-- Extra Action Buttons -->
+    <!-- Clear & Review Controls -->
     <div class="flex items-center justify-between mt-5">
       <button onclick="clearResponse()" class="text-xs font-semibold text-rose-500 hover:text-rose-600 active:opacity-70 flex items-center gap-1">
         <i class="fa-solid fa-rotate-left"></i> Clear Response
@@ -97,8 +95,67 @@
 
   </main>
 
-  <!-- FIXED BOTTOM CONTROLS -->
-  <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 py-3 px-4 shadow-lg z-40">
+  <!-- SCREEN 2: DEEP EXAM ANALYSIS & SOLUTION SCREEN (Initially Hidden) -->
+  <main id="analysis-screen" class="max-w-md mx-auto p-4 hidden">
+    
+    <!-- Result Summary Box -->
+    <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm mb-5 text-center">
+      <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-2">
+        <i class="fa-solid fa-trophy"></i>
+      </div>
+      <h2 class="text-lg font-black text-slate-800">Exam Result &amp; Analysis</h2>
+      <p class="text-xs text-slate-400">Study Bull Test Evaluation Report</p>
+
+      <!-- Marks Grid -->
+      <div class="grid grid-cols-2 gap-2.5 my-4">
+        <div class="bg-[#f8fafc] border border-slate-200/80 rounded-2xl p-3 text-left">
+          <span class="text-[10px] font-bold text-slate-400 block uppercase">Final Score</span>
+          <span id="final-score" class="text-xl font-black text-blue-600">0 / 10</span>
+        </div>
+        <div class="bg-[#f8fafc] border border-slate-200/80 rounded-2xl p-3 text-left">
+          <span class="text-[10px] font-bold text-slate-400 block uppercase">Accuracy</span>
+          <span id="final-accuracy" class="text-xl font-black text-emerald-600">0%</span>
+        </div>
+      </div>
+
+      <!-- Stats Breakdown -->
+      <div class="grid grid-cols-3 gap-2 py-3 border-t border-b border-slate-100 text-center">
+        <div>
+          <span class="text-[10px] font-bold text-emerald-600 uppercase block">Correct (+2)</span>
+          <span id="final-correct" class="text-base font-black text-slate-800">0</span>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-rose-500 uppercase block">Wrong (-0.5)</span>
+          <span id="final-wrong" class="text-base font-black text-slate-800">0</span>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-slate-400 uppercase block">Skipped</span>
+          <span id="final-skipped" class="text-base font-black text-slate-800">0</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-2.5 mt-4">
+        <a href="index.html" class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 font-bold text-xs rounded-xl text-slate-700 transition">
+          Home Portal
+        </a>
+        <button onclick="location.reload()" class="w-1/2 py-2.5 bg-blue-600 hover:bg-blue-700 font-bold text-xs rounded-xl text-white transition">
+          Reattempt Test
+        </button>
+      </div>
+    </div>
+
+    <!-- Detailed Solutions List -->
+    <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider mb-3 flex items-center gap-2">
+      <i class="fa-solid fa-clipboard-check text-blue-600"></i> Question-by-Question Solution
+    </h3>
+
+    <div id="solutions-list" class="space-y-4"></div>
+
+  </main>
+
+  <!-- FIXED BOTTOM CONTROLS FOR EXAM -->
+  <footer id="exam-footer" class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 py-3 px-4 shadow-lg z-40">
     <div class="max-w-md mx-auto flex items-center justify-between gap-3">
       <button 
         id="mock-prev-btn" 
@@ -116,7 +173,7 @@
     </div>
   </footer>
 
-  <!-- QUESTION PALETTE OVERLAY DRAWER -->
+  <!-- QUESTION PALETTE DRAWER -->
   <div id="palette-modal" class="fixed inset-0 bg-black/50 z-50 hidden transition-opacity flex justify-end">
     <div class="bg-white w-4/5 max-w-xs h-full p-4 flex flex-col shadow-2xl overflow-y-auto">
       
@@ -135,12 +192,10 @@
         <div class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded-full bg-purple-500"></span> Marked Review</div>
       </div>
 
-      <!-- Palette Grid Numbers -->
-      <div id="palette-grid" class="grid grid-cols-4 gap-2 flex-grow overflow-y-auto pt-2">
-        <!-- Render numbers via JS -->
-      </div>
+      <!-- Palette Grid -->
+      <div id="palette-grid" class="grid grid-cols-4 gap-2 flex-grow overflow-y-auto pt-2"></div>
 
-      <!-- Submit Test Trigger -->
+      <!-- Submit Test -->
       <button onclick="submitExam()" class="w-full mt-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs uppercase tracking-wider transition">
         Submit Test
       </button>
@@ -148,63 +203,53 @@
     </div>
   </div>
 
-  <!-- RESULT & SCORE ANALYSIS MODAL -->
-  <div id="result-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center shadow-2xl relative">
-      <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">
-        <i class="fa-solid fa-trophy"></i>
-      </div>
-      <h3 class="text-lg font-black text-slate-800">Test Submitted!</h3>
-      <p class="text-xs text-slate-400 mt-0.5">Yahan hai aapka final performance scorecard</p>
-
-      <div class="bg-[#f8fafc] border border-slate-200 rounded-2xl p-4 my-4 grid grid-cols-2 gap-3 text-left">
-        <div>
-          <span class="text-[10px] font-bold text-slate-400 block uppercase">Final Score</span>
-          <span id="final-score" class="text-xl font-black text-blue-600">0 / 20</span>
-        </div>
-        <div>
-          <span class="text-[10px] font-bold text-slate-400 block uppercase">Accuracy</span>
-          <span id="final-accuracy" class="text-xl font-black text-emerald-600">0%</span>
-        </div>
-        <div>
-          <span class="text-[10px] font-bold text-slate-400 block uppercase">Correct</span>
-          <span id="final-correct" class="text-base font-bold text-emerald-600">0</span>
-        </div>
-        <div>
-          <span class="text-[10px] font-bold text-slate-400 block uppercase">Wrong</span>
-          <span id="final-wrong" class="text-base font-bold text-rose-500">0</span>
-        </div>
-      </div>
-
-      <div class="flex gap-2">
-        <a href="index.html" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 font-bold text-xs rounded-xl text-slate-700 transition">
-          Home Page
-        </a>
-        <button onclick="location.reload()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 font-bold text-xs rounded-xl text-white transition">
-          Reattempt
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- ========================================== -->
-  <!-- MOCK TEST CORE ENGINE                      -->
+  <!-- MOCK TEST ENGINE                           -->
   <!-- ========================================== -->
   <script>
     const MOCK_QUESTIONS = [
-      { id: 1, text: "भारत के प्रथम राष्ट्रपति कौन थे?", options: ["डॉ. राजेंद्र प्रसाद", "डॉ. एस. राधाकृष्णन", "जवाहरलाल नेहरू", "सरदार पटेल"], correct: 0 },
-      { id: 2, text: "विश्व पर्यावरण दिवस (World Environment Day) कब मनाया जाता है?", options: ["5 जून", "22 अप्रैल", "1 मई", "16 सितंबर"], correct: 0 },
-      { id: 3, text: "मानव शरीर की सबसे बड़ी ग्रंथि (Largest Gland) कौन सी है?", options: ["अग्न्याशय (Pancreas)", "थायरॉयड", "यकृत (Liver)", "पीयूष ग्रंथि"], correct: 2 },
-      { id: 4, text: "भारतीय संविधान सभा के प्रारूप समिति के अध्यक्ष कौन थे?", options: ["डॉ. भीमराव अंबेडकर", "जवाहरलाल नेहरू", "के. एम. मुंशी", "बी. एन. राव"], correct: 0 },
-      { id: 5, text: "भारत का सबसे दक्षिणी बिंदु 'इंदिरा पॉइंट' कहाँ स्थित है?", options: ["तमिलनाडु", "लक्षद्वीप", "ग्रेट निकोबार", "केरल"], correct: 2 }
+      { 
+        id: 1, 
+        text: "भारत के प्रथम राष्ट्रपति कौन थे?", 
+        options: ["डॉ. राजेंद्र प्रसाद", "डॉ. एस. राधाकृष्णन", "जवाहरलाल नेहरू", "सरदार पटेल"], 
+        correct: 0,
+        explanation: "डॉ. राजेंद्र प्रसाद भारत के प्रथम राष्ट्रपति थे और वे 1950 से 1962 तक इस पद पर रहे।"
+      },
+      { 
+        id: 2, 
+        text: "विश्व पर्यावरण दिवस (World Environment Day) कब मनाया जाता है?", 
+        options: ["5 जून", "22 अप्रैल", "1 मई", "16 सितंबर"], 
+        correct: 0,
+        explanation: "संयुक्त राष्ट्र द्वारा पर्यावरण संरक्षण के प्रति जागरूकता फैलाने के लिए हर वर्ष 5 जून को विश्व पर्यावरण दिवस मनाया जाता है।"
+      },
+      { 
+        id: 3, 
+        text: "मानव शरीर की सबसे बड़ी ग्रंथि (Largest Gland) कौन सी है?", 
+        options: ["अग्न्याशय (Pancreas)", "थायरॉयड", "यकृत (Liver)", "पीयूष ग्रंथि"], 
+        correct: 2,
+        explanation: "यकृत (Liver) मानव शरीर की सबसे बड़ी ग्रंथि है, जो पित्त रस (Bile) का निर्माण करती है।"
+      },
+      { 
+        id: 4, 
+        text: "भारतीय संविधान सभा के प्रारूप समिति (Drafting Committee) के अध्यक्ष कौन थे?", 
+        options: ["डॉ. भीमराव अंबेडकर", "जवाहरलाल नेहरू", "के. एम. मुंशी", "बी. एन. राव"], 
+        correct: 0,
+        explanation: "डॉ. भीमराव अंबेडकर को प्रारूप समिति का अध्यक्ष बनाया गया था, जिसने भारत के संविधान का मसौदा तैयार किया था।"
+      },
+      { 
+        id: 5, 
+        text: "भारत का सबसे दक्षिणी बिंदु 'इंदिरा पॉइंट' कहाँ स्थित है?", 
+        options: ["तमिलनाडु", "लक्षद्वीप", "ग्रेट निकोबार", "केरल"], 
+        correct: 2,
+        explanation: "इंदिरा पॉइंट अंडमान और निकोबार द्वीप समूह के ग्रेट निकोबार द्वीप में स्थित भारत का सबसे दक्षिणी बिंदु है।"
+      }
     ];
 
     let currentQ = 0;
-    let answers = {}; // { index: selectedOption }
+    let answers = {};
     let markedReview = new Set();
     let visited = new Set([0]);
 
-    // 10 minutes timer (in seconds)
     let timeLeft = 600;
     let timerInterval = null;
 
@@ -224,7 +269,7 @@
 
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
-          alert("Time's up! Submitting exam automatically.");
+          alert("Time's up! Exam auto submitting.");
           submitExam();
         }
       }, 1000);
@@ -244,14 +289,12 @@
         ? `Submit Test <i class="fa-solid fa-flag-checkered text-[10px]"></i>`
         : `Save & Next <i class="fa-solid fa-chevron-right text-[10px]"></i>`;
 
-      // Update Review Button state
       const isMarked = markedReview.has(currentQ);
       const revBtn = document.getElementById("review-btn");
       revBtn.innerHTML = isMarked
         ? `<i class="fa-solid fa-bookmark"></i> Marked for Review`
         : `<i class="fa-regular fa-bookmark"></i> Mark for Review`;
 
-      // Render Options
       const container = document.getElementById("mock-options-container");
       container.innerHTML = "";
 
@@ -315,10 +358,8 @@
       }
     }
 
-    // Palette Logic
     function togglePalette() {
-      const modal = document.getElementById("palette-modal");
-      modal.classList.toggle("hidden");
+      document.getElementById("palette-modal").classList.toggle("hidden");
     }
 
     function renderPalette() {
@@ -326,7 +367,7 @@
       grid.innerHTML = "";
 
       MOCK_QUESTIONS.forEach((_, idx) => {
-        let bg = "bg-slate-200 text-slate-700"; // not visited
+        let bg = "bg-slate-200 text-slate-700";
 
         if (markedReview.has(idx)) {
           bg = "bg-purple-600 text-white";
@@ -355,9 +396,19 @@
       }
     }
 
+    // ==========================================
+    // EXAM SUBMISSION & ANALYSIS SCREEN LOGIC
+    // ==========================================
     function submitExam() {
       clearInterval(timerInterval);
-      
+
+      // Hide Exam Screen & Controls, Show Analysis Screen
+      document.getElementById("exam-screen").classList.add("hidden");
+      document.getElementById("exam-footer").classList.add("hidden");
+      document.getElementById("exam-header").classList.add("hidden");
+      document.getElementById("palette-modal").classList.add("hidden");
+      document.getElementById("analysis-screen").classList.remove("hidden");
+
       let correct = 0;
       let wrong = 0;
       const total = MOCK_QUESTIONS.length;
@@ -372,20 +423,59 @@
         }
       });
 
-      // Marks formula: (+2 for correct, -0.5 for wrong)
+      const skipped = total - (correct + wrong);
       const score = (correct * 2) - (wrong * 0.5);
       const attempted = correct + wrong;
       const accuracy = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
 
+      // Populate summary stats
       document.getElementById("final-score").textContent = `${score} / ${total * 2}`;
       document.getElementById("final-accuracy").textContent = `${accuracy}%`;
       document.getElementById("final-correct").textContent = correct;
       document.getElementById("final-wrong").textContent = wrong;
+      document.getElementById("final-skipped").textContent = skipped;
 
-      document.getElementById("result-modal").classList.remove("hidden");
-    }
+      // Render Detailed Question by Question Solution List
+      const solList = document.getElementById("solutions-list");
+      solList.innerHTML = "";
 
-    document.addEventListener("DOMContentLoaded", initMock);
-  </script>
-</body>
-</html>
+      MOCK_QUESTIONS.forEach((q, idx) => {
+        const userChoice = answers[idx];
+        const isAnswered = answers.hasOwnProperty(idx);
+        const isRight = (userChoice === q.correct);
+
+        let statusBadge = "";
+        let borderClass = "";
+
+        if (!isAnswered) {
+          statusBadge = `<span class="bg-slate-100 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded">Not Attempted (0 Marks)</span>`;
+          borderClass = "border-slate-200";
+        } else if (isRight) {
+          statusBadge = `<span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">Correct (+2.0 Marks)</span>`;
+          borderClass = "border-emerald-300";
+        } else {
+          statusBadge = `<span class="bg-rose-100 text-rose-700 text-[10px] font-bold px-2 py-0.5 rounded">Negative (-0.5 Marks)</span>`;
+          borderClass = "border-rose-300";
+        }
+
+        const card = document.createElement("div");
+        card.className = `bg-white border ${borderClass} rounded-2xl p-4 shadow-sm`;
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-400">Question ${idx + 1}</span>
+            ${statusBadge}
+          </div>
+          <p class="font-bold text-xs text-slate-800 mb-3">${q.text}</p>
+          
+          <div class="space-y-1.5 text-xs mb-3">
+            <div class="p-2 rounded-lg ${isAnswered && !isRight ? 'bg-rose-50 text-rose-800 font-semibold' : 'bg-slate-50 text-slate-600'}">
+              <span class="font-bold">Your Response:</span> ${isAnswered ? q.options[userChoice] : "None"}
+            </div>
+            <div class="p-2 rounded-lg bg-emerald-50 text-emerald-800 font-semibold">
+              <span class="font-bold">Correct Answer:</span> ${q.options[q.correct]}
+            </div>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200/60 rounded-xl p-2.5 text-[11px] text-slate-600">
+            <span class="fon
